@@ -110,7 +110,7 @@ export default function Home() {
   const handleQuiz = () => {
     if (writerRef.current) {
       writerRef.current.quiz();
-      setDebugInfo(`开始字符 "${char}" 的书写练习`);
+      setDebugInfo(`开始字符 "${char}" 的书写练习，请在书写框中完成笔画顺序`);
     }
   };
 
