@@ -1,0 +1,12 @@
+{
+  "name": "hanzi-write",
+  "version": "1.0.0",
+  "description": "show how to write hanzi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
