@@ -1,21 +1,35 @@
 {
   "name": "hanzi-write",
   "version": "1.0.0",
-  "description": "show how to write hanzi",
+  "description": "一个基于 Hanzi Writer 的汉字书写练习网站",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "hanzi",
+    "chinese",
+    "writing",
+    "practice",
+    "education"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-github-username/hanzi-write.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-github-username/hanzi-write/issues"
+  },
+  "homepage": "https://github.com/your-github-username/hanzi-write#readme",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "next": "^13.4.0",
-    "hanzi-writer": "^3.7.0"
+    "hanzi-writer": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
