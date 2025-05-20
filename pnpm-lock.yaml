@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       hanzi-writer:
-        specifier: ^3.7.0
+        specifier: ^3.7.2
         version: 3.7.2
       next:
         specifier: ^13.4.0
@@ -23,7 +23,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^18.0.0
-        version: 18.19.100
+        version: 18.19.101
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.21
@@ -96,8 +96,8 @@ packages:
   '@swc/helpers@0.5.2':
     resolution: {integrity: sha512-E4KcWTpoLHqwPHLxidpOqQbcrZVgi0rsmmZXUle1jXmJfuIf/UWpczUJ7MZZ5tlxytgJXyp0w4PGkkeLiuIdZw==}
 
-  '@types/node@18.19.100':
-    resolution: {integrity: sha512-ojmMP8SZBKprc3qGrGk8Ujpo80AXkrP7G2tOT4VWr5jlr5DHjsJF+emXJz+Wm0glmy4Js62oKMdZZ6B9Y+tEcA==}
+  '@types/node@18.19.101':
+    resolution: {integrity: sha512-Ykg7fcE3+cOQlLUv2Ds3zil6DVjriGQaSN/kEpl5HQ3DIGM6W0F2n9+GkWV4bRt7KjLymgzNdTnSKCbFUUJ7Kw==}
 
   '@types/prop-types@15.7.14':
     resolution: {integrity: sha512-gNMvNH49DJ7OJYv+KAKn0Xp45p8PLl6zo2YnvDIbTd4J6MER2BmWN49TG7n9LvkyihINxeKW8+3bfS2yDC9dzQ==}
@@ -249,7 +249,7 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  '@types/node@18.19.100':
+  '@types/node@18.19.101':
     dependencies:
       undici-types: 5.26.5
 
