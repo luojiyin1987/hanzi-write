@@ -19,12 +19,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-github-username/hanzi-write.git"
+    "url": "git+https://github.com/luojiyin1987/hanzi-write.git"
   },
   "bugs": {
-    "url": "https://github.com/your-github-username/hanzi-write/issues"
+    "url": "https://github.com/luojiyin1987/hanzi-write/issues"
   },
-  "homepage": "https://github.com/your-github-username/hanzi-write#readme",
+  "homepage": "https://github.com/luojiyin1987/hanzi-write#readme",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
