@@ -30,6 +30,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.2.0
         version: 18.3.7(@types/react@18.3.21)
+      husky:
+        specifier: ^9.1.7
+        version: 9.1.7
       typescript:
         specifier: ^5.0.0
         version: 5.8.3
@@ -131,6 +134,11 @@ packages:
 
   hanzi-writer@3.7.2:
     resolution: {integrity: sha512-9v8V45rY4leG62qmq+c9MzjT4mPrVbFATv5tWWw3NucaxOO4bM/CiJ8qfPt/NOQuvWYhOhuHu6TzfjZ0ibY6jg==}
+
+  husky@9.1.7:
+    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -279,6 +287,8 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   hanzi-writer@3.7.2: {}
+
+  husky@9.1.7: {}
 
   js-tokens@4.0.0: {}
 

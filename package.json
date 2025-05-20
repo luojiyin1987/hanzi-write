@@ -9,7 +9,17 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "format": "prettier --write .",
-    "prepare": "husky install"
+    "postinstall": "husky",
+    "lint-staged": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "next lint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,scss,md,yaml,yml}": [
+      "prettier --write"
+    ]
   },
   "keywords": [
     "hanzi",
@@ -29,15 +39,22 @@
   },
   "homepage": "https://github.com/luojiyin1987/hanzi-write#readme",
   "dependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "hanzi-writer": "^3.7.2",
     "next": "^13.4.0",
-    "hanzi-writer": "^3.7.2"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/node": "^18.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.0",
     "typescript": "^5.0.0"
   }
 }
