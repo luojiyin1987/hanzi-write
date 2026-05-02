@@ -7,6 +7,7 @@ export default function Home() {
   const [debugInfo, setDebugInfo] = useState('');
   const writerRef = useRef<HanziWriter | null>(null);
   const targetRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // 销毁当前的 writer 实例
   const destroyWriter = () => {
@@ -76,7 +77,7 @@ export default function Home() {
   const handleCharChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newChar = e.target.value;
     console.log('New character:', newChar);
-    
+
     // 如果输入为空，直接更新
     if (!newChar) {
       destroyWriter();
@@ -87,7 +88,7 @@ export default function Home() {
 
     // 获取最后一个字符（处理输入法组合状态）
     const lastChar = newChar[newChar.length - 1];
-    
+
     // 检查是否是中文字符
     if (/[\u4e00-\u9fa5]/.test(lastChar)) {
       destroyWriter(); // 在更新新字符前销毁旧的显示
@@ -95,7 +96,10 @@ export default function Home() {
       setIsLoading(true);
       setChar(lastChar);
     } else {
-      // 如果不是中文字符，显示提示
+      // 如果不是中文字符，强制恢复 input 值与 state 一致
+      if (inputRef.current) {
+        inputRef.current.value = char;
+      }
       setDebugInfo('请输入中文字符');
     }
   };
@@ -119,6 +123,7 @@ export default function Home() {
       <h1>汉字书写练习</h1>
       <div className="controls">
         <input
+          ref={inputRef}
           type="text"
           value={char}
           onChange={handleCharChange}
