@@ -94,6 +94,14 @@
 
   <script src="https://unpkg.com/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
   <script>
+    // CDN 加载失败（如内网环境），自动回退到本地
+    if (typeof HanziWriter === 'undefined') {
+      var fallback = document.createElement('script');
+      fallback.src = 'lib/hanzi-writer.min.js';
+      document.head.appendChild(fallback);
+    }
+  </script>
+  <script>
     (function() {
       // DOM 引用
       var charInput = document.getElementById('charInput');
