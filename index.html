@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>汉字书写练习</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .controls {
+      margin: 2rem 0;
+    }
+    input {
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 120px;
+      text-align: center;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: #0070f3;
+      color: white;
+      border: none;
+      border-radius: 4px;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
+      background-color: #0051a2;
+    }
+    .character-display {
+      margin: 2rem auto;
+      width: 200px;
+      height: 200px;
+    }
+    .loading {
+      margin-top: 1rem;
+      color: #666;
+    }
+    .debug-info {
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #666;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>汉字书写练习</h1>
+    <div class="controls">
+      <input
+        id="charInput"
+        type="text"
+        value="你"
+        placeholder="输入一个汉字"
+        maxlength="1"
+      />
+      <button id="btnAnimate" disabled>显示笔画</button>
+      <button id="btnQuiz" disabled>开始练习</button>
+    </div>
+    <div id="target" class="character-display"></div>
+    <div id="loading" class="loading" style="display: none;">加载中...</div>
+    <div id="debugInfo" class="debug-info"></div>
+  </div>
+
+  <script src="https://unpkg.com/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
+  <script>
+    (function() {
+      // DOM 引用
+      var charInput = document.getElementById('charInput');
+      var target = document.getElementById('target');
+      var btnAnimate = document.getElementById('btnAnimate');
+      var btnQuiz = document.getElementById('btnQuiz');
+      var loading = document.getElementById('loading');
+      var debugInfo = document.getElementById('debugInfo');
+
+      // 状态
+      var char = '你';
+      var isLoading = true;
+      var writer = null;
+
+      function setDebug(msg) {
+        debugInfo.textContent = msg;
+        console.log(msg);
+      }
+
+      function setLoading(val) {
+        isLoading = val;
+        loading.style.display = val ? 'block' : 'none';
+        btnAnimate.disabled = val;
+        btnQuiz.disabled = val;
+      }
+
+      function destroyWriter() {
+        if (writer) {
+          // hanzi-writer 没有显式 destroy，直接清空 DOM
+          writer = null;
+        }
+        target.innerHTML = '';
+      }
+
+      function loadCharacterData(ch) {
+        if (!ch) {
+          setDebug('字符为空，跳过加载');
+          return Promise.resolve();
+        }
+        setDebug('正在加载字符 "' + ch + '" 的数据...');
+        return HanziWriter.loadCharacterData(ch).then(function() {
+          setDebug('字符 "' + ch + '" 数据加载完成');
+        }).catch(function(err) {
+          setDebug('加载字符 "' + ch + '" 失败: ' + (err && err.message ? err.message : '未知错误'));
+          throw err;
+        });
+      }
+
+      function createWriter(ch) {
+        if (!ch || !target) return;
+        destroyWriter();
+        setDebug('正在创建字符 "' + ch + '" 的书写实例...');
+        try {
+          writer = HanziWriter.create(target, ch, {
+            width: 200,
+            height: 200,
+            padding: 5,
+            showOutline: true,
+            strokeAnimationSpeed: 1,
+            delayBetweenStrokes: 200,
+            delayBetweenLoops: 1000,
+          });
+          setDebug('字符 "' + ch + '" 的书写实例创建成功');
+        } catch (err) {
+          setDebug('创建字符 "' + ch + '" 的书写实例失败: ' + (err && err.message ? err.message : '未知错误'));
+          console.error(err);
+        }
+      }
+
+      function switchChar(newChar) {
+        char = newChar;
+        charInput.value = char;
+        destroyWriter();
+        setLoading(true);
+        loadCharacterData(char).then(function() {
+          setLoading(false);
+          createWriter(char);
+        }).catch(function() {
+          setLoading(false);
+        });
+      }
+
+      // 输入处理
+      charInput.addEventListener('input', function(e) {
+        var val = e.target.value;
+        console.log('New character:', val);
+
+        if (!val) {
+          destroyWriter();
+          char = '';
+          setDebug('输入框已清空');
+          setLoading(false);
+          btnAnimate.disabled = true;
+          btnQuiz.disabled = true;
+          return;
+        }
+
+        var lastChar = val[val.length - 1];
+        if (/[\u4e00-\u9fa5]/.test(lastChar)) {
+          switchChar(lastChar);
+        } else {
+          // 不是中文，回退到之前的值
+          e.target.value = char;
+          setDebug('请输入中文字符');
+        }
+      });
+
+      // 按钮事件
+      btnAnimate.addEventListener('click', function() {
+        if (writer) {
+          writer.animateCharacter();
+          setDebug('正在播放字符 "' + char + '" 的书写动画');
+        }
+      });
+
+      btnQuiz.addEventListener('click', function() {
+        if (writer) {
+          writer.quiz();
+          setDebug('开始字符 "' + char + '" 的书写练习，请在书写框中完成笔画顺序');
+        }
+      });
+
+      // 初始化
+      setLoading(true);
+      loadCharacterData(char).then(function() {
+        setLoading(false);
+        createWriter(char);
+      }).catch(function() {
+        setLoading(false);
+      });
+    })();
+  </script>
+</body>
+</html>

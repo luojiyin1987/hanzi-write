@@ -8,7 +8,7 @@
 
 ## 在线演示
 
-访问 [在线演示](https://your-github-username.github.io/hanzi-write) 体验功能。
+访问 [在线演示](https://luojiyin1987.github.io/hanzi-write) 体验功能。
 
 ## 功能特点
 
@@ -19,30 +19,23 @@
 
 ## 开始使用
 
-1. 安装依赖：
-```bash
-npm install
-```
+无需构建，直接打开 `index.html` 即可使用。
 
-2. 运行开发服务器：
-```bash
-npm run dev
-```
-
-3. 在浏览器中访问 http://localhost:3000
-
-## 构建生产版本
+也可以本地启动一个简单的 HTTP 服务器：
 
 ```bash
-npm run build
-npm start
+npx serve .
+# 或
+python3 -m http.server 3000
 ```
+
+然后在浏览器中访问 http://localhost:3000
 
 ## 技术栈
 
-- Next.js
-- React
-- TypeScript
+- HTML5
+- CSS3
+- 原生 JavaScript
 - Hanzi Writer
 
 ## 贡献指南
@@ -59,7 +52,7 @@ npm start
 
 如果你发现任何问题或有改进建议，请：
 
-1. 在 [GitHub Issues](https://github.com/your-github-username/hanzi-write/issues) 中提交问题
+1. 在 [GitHub Issues](https://github.com/luojiyin1987/hanzi-write/issues) 中提交问题
 2. 详细描述问题或建议
 3. 如果可能，提供复现步骤
 
@@ -70,6 +63,5 @@ npm start
 ## 致谢
 
 - [Hanzi Writer](https://github.com/chanind/hanzi-writer) - 提供汉字书写动画功能
-- [Next.js](https://nextjs.org/) - React 框架
 
-在此感谢 [haizi-writer](https://github.com/chanind/hanzi-writer)
+感谢 [hanzi-writer](https://github.com/chanind/hanzi-writer)
