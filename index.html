@@ -2,74 +2,160 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#0070f3">
   <title>汉字书写练习</title>
   <style>
+    :root {
+      --primary: #0070f3;
+      --primary-hover: #0051a2;
+      --bg: #fafafa;
+      --surface: #fff;
+      --text: #111;
+      --muted: #666;
+      --border: #e5e5e5;
+    }
     * {
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    html, body {
       margin: 0;
       padding: 0;
-      background-color: #fff;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
     }
     .container {
-      max-width: 800px;
+      max-width: 600px;
       margin: 0 auto;
-      padding: 2rem;
+      padding: 1rem;
       text-align: center;
     }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      margin: 0.5rem 0 1rem;
+      font-weight: 600;
     }
     .controls {
-      margin: 2rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
     }
     input {
-      padding: 0.5rem;
+      -webkit-appearance: none;
+      appearance: none;
+      padding: 0 0.5rem;
       font-size: 1.2rem;
-      margin-right: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 120px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      width: 100px;
+      height: 48px;
       text-align: center;
+      background: var(--surface);
+      outline: none;
+      transition: border-color .2s;
+    }
+    input:focus {
+      border-color: var(--primary);
     }
     button {
-      padding: 0.5rem 1rem;
-      margin: 0 0.5rem;
+      -webkit-appearance: none;
+      appearance: none;
+      padding: 0 1.25rem;
       font-size: 1rem;
       cursor: pointer;
-      background-color: #0070f3;
+      background-color: var(--primary);
       color: white;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
+      height: 48px;
+      min-width: 100px;
+      font-weight: 500;
+      transition: background-color .2s, transform .05s;
+    }
+    button:active:not(:disabled) {
+      transform: scale(0.96);
     }
     button:disabled {
       background-color: #ccc;
       cursor: not-allowed;
     }
     button:hover:not(:disabled) {
-      background-color: #0051a2;
+      background-color: var(--primary-hover);
     }
-    .character-display {
-      margin: 2rem auto;
-      width: 200px;
-      height: 200px;
+    .board-wrap {
+      margin: 1.5rem auto;
+      width: min(300px, 72vw);
+      height: min(300px, 72vw);
+      background: var(--surface);
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      touch-action: none;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #target {
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+    }
+    #target svg {
+      width: 100% !important;
+      height: 100% !important;
     }
     .loading {
-      margin-top: 1rem;
-      color: #666;
+      margin-top: 0.75rem;
+      color: var(--muted);
+      font-size: 0.95rem;
     }
     .debug-info {
-      margin-top: 1rem;
-      padding: 0.5rem;
-      background-color: #f5f5f5;
-      border-radius: 4px;
-      font-size: 0.9rem;
-      color: #666;
+      margin-top: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
       word-break: break-all;
+      min-height: 2rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0.75rem;
+      }
+      .controls {
+        gap: 0.6rem;
+      }
+      input {
+        width: 80px;
+        height: 44px;
+        font-size: 1.1rem;
+      }
+      button {
+        height: 44px;
+        padding: 0 1rem;
+        min-width: 90px;
+        font-size: 0.95rem;
+      }
+      .board-wrap {
+        width: min(260px, 78vw);
+        height: min(260px, 78vw);
+      }
     }
   </style>
 </head>
@@ -81,20 +167,25 @@
         id="charInput"
         type="text"
         value="你"
-        placeholder="输入一个汉字"
+        placeholder="输入汉字"
         maxlength="1"
+        inputmode="none"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
       />
       <button id="btnAnimate" disabled>显示笔画</button>
       <button id="btnQuiz" disabled>开始练习</button>
     </div>
-    <div id="target" class="character-display"></div>
+    <div class="board-wrap">
+      <div id="target"></div>
+    </div>
     <div id="loading" class="loading" style="display: none;">加载中...</div>
     <div id="debugInfo" class="debug-info"></div>
   </div>
 
   <script src="https://unpkg.com/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
   <script>
-    // CDN 加载失败（如内网环境），自动回退到本地
     if (typeof HanziWriter === 'undefined') {
       var fallback = document.createElement('script');
       fallback.src = 'lib/hanzi-writer.min.js';
@@ -103,18 +194,21 @@
   </script>
   <script>
     (function() {
-      // DOM 引用
       var charInput = document.getElementById('charInput');
       var target = document.getElementById('target');
       var btnAnimate = document.getElementById('btnAnimate');
       var btnQuiz = document.getElementById('btnQuiz');
       var loading = document.getElementById('loading');
       var debugInfo = document.getElementById('debugInfo');
+      var boardWrap = document.querySelector('.board-wrap');
 
-      // 状态
       var char = '你';
       var isLoading = true;
       var writer = null;
+
+      function getBoardSize() {
+        return Math.min(boardWrap.clientWidth, boardWrap.clientHeight, 300);
+      }
 
       function setDebug(msg) {
         debugInfo.textContent = msg;
@@ -130,7 +224,6 @@
 
       function destroyWriter() {
         if (writer) {
-          // hanzi-writer 没有显式 destroy，直接清空 DOM
           writer = null;
         }
         target.innerHTML = '';
@@ -153,11 +246,12 @@
       function createWriter(ch) {
         if (!ch || !target) return;
         destroyWriter();
-        setDebug('正在创建字符 "' + ch + '" 的书写实例...');
+        var size = getBoardSize();
+        setDebug('正在创建字符 "' + ch + '" 的书写实例 (' + size + 'x' + size + ')...');
         try {
           writer = HanziWriter.create(target, ch, {
-            width: 200,
-            height: 200,
+            width: size,
+            height: size,
             padding: 5,
             showOutline: true,
             strokeAnimationSpeed: 1,
@@ -184,7 +278,6 @@
         });
       }
 
-      // 输入处理
       charInput.addEventListener('input', function(e) {
         var val = e.target.value;
         console.log('New character:', val);
@@ -203,13 +296,34 @@
         if (/[\u4e00-\u9fa5]/.test(lastChar)) {
           switchChar(lastChar);
         } else {
-          // 不是中文，回退到之前的值
           e.target.value = char;
           setDebug('请输入中文字符');
         }
       });
 
-      // 按钮事件
+      // 聚焦输入框时弹出中文键盘
+      charInput.addEventListener('focus', function() {
+        this.setAttribute('inputmode', 'text');
+      });
+      charInput.addEventListener('blur', function() {
+        this.setAttribute('inputmode', 'none');
+      });
+
+      // 横屏/尺寸变化时重绘
+      var resizeTimer;
+      window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+          if (writer && char && !isLoading) {
+            var size = getBoardSize();
+            if (size > 0) {
+              destroyWriter();
+              createWriter(char);
+            }
+          }
+        }, 250);
+      });
+
       btnAnimate.addEventListener('click', function() {
         if (writer) {
           writer.animateCharacter();
@@ -224,7 +338,13 @@
         }
       });
 
-      // 初始化
+      // 防止书写时页面滚动/缩放
+      document.body.addEventListener('touchmove', function(e) {
+        if (e.target.closest('.board-wrap')) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+
       setLoading(true);
       loadCharacterData(char).then(function() {
         setLoading(false);
