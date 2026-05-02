@@ -133,6 +133,27 @@
       min-height: 2rem;
       line-height: 1.4;
     }
+    .toast {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(-150%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 9999px;
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+      z-index: 1000;
+      white-space: nowrap;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
 
     @media (max-width: 480px) {
       .container {
@@ -182,6 +203,7 @@
     </div>
     <div id="loading" class="loading" style="display: none;">加载中...</div>
     <div id="debugInfo" class="debug-info"></div>
+    <div id="toast" class="toast">练习完成！</div>
   </div>
 
   <script src="https://unpkg.com/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
@@ -201,6 +223,7 @@
       var loading = document.getElementById('loading');
       var debugInfo = document.getElementById('debugInfo');
       var boardWrap = document.querySelector('.board-wrap');
+      var toast = document.getElementById('toast');
 
       var char = '你';
       var isLoading = true;
@@ -220,6 +243,16 @@
         loading.style.display = val ? 'block' : 'none';
         btnAnimate.disabled = val;
         btnQuiz.disabled = val;
+      }
+
+      var toastTimer;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function() {
+          toast.classList.remove('show');
+        }, 2500);
       }
 
       function destroyWriter() {
@@ -333,7 +366,12 @@
 
       btnQuiz.addEventListener('click', function() {
         if (writer) {
-          writer.quiz();
+          writer.quiz({
+            onComplete: function() {
+              showToast('练习完成！');
+              setDebug('字符 "' + char + '" 书写练习已完成');
+            }
+          });
           setDebug('开始字符 "' + char + '" 的书写练习，请在书写框中完成笔画顺序');
         }
       });
